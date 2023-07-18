@@ -32,6 +32,7 @@ function BankStatement() {
           Bank Account:
           <input
             className="input"
+            data-testid="bank-account"
             type="number"
             value={ account }
             onChange={ ({ target }) => setAccount(target.value)}
@@ -42,6 +43,7 @@ function BankStatement() {
           Initital Date:
           <input
             className="input"
+            data-testid="initial-date"
             type="date"
             value={ initialDate }
             onChange={ ({ target }) => setInitialDate(target.value)}
@@ -51,6 +53,7 @@ function BankStatement() {
           Final Date:
           <input
             className="input"
+            data-testid="final-date"
             type="date"
             value={ finalDate }
             onChange={ ({ target }) => setFinalDate(target.value)}
@@ -60,6 +63,7 @@ function BankStatement() {
           Operador:
           <input
             className="input"
+            data-testid="operador"
             type="text"
             value={ operador }
             onChange={ ({ target }) => setOperador(target.value)}
