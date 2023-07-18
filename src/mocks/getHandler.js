@@ -3,12 +3,16 @@
 import { rest } from 'msw';
 import { testData } from './testData';
 
-const postHandler = rest.get('http://localhost:8080/transferencias/1', (_, res, ctx) => {
+const getHandler = rest.get('http://localhost:8080/transferencias/:id', (req, res, ctx) => {
+  // eslint-disable-next-line no-unused-vars
+  const { id } = req.params;
+  // eslint-disable-next-line no-unused-vars
+  const { operador } = req.url.searchParams;
   return res(
     ctx.status(200),
     ctx.json(testData)
   )
 });
 
-export default postHandler;
+export default getHandler;
 
