@@ -7,10 +7,10 @@ import { converteData } from "../services/dateUtil";
 const PageSize = 10;
 
 function BankStatement() {
-  const [account, setAccount] = useState();
-  const [initialDate, setInitialDate] = useState();
-  const [finalDate, setFinalDate] = useState();
-  const [operador, setOperador] = useState();
+  const [account, setAccount] = useState('');
+  const [initialDate, setInitialDate] = useState('');
+  const [finalDate, setFinalDate] = useState('');
+  const [operador, setOperador] = useState('');
   const [transfers, setTransfers] = useState();
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -97,7 +97,7 @@ function BankStatement() {
       { transfers && transfers.transferencias.length > 0 &&
         <div>
           <div className="transfer_total">
-            <span className="total_balance">Saldo total: R$ {transfers.saldoTotal}</span>
+            <span className="total_balance" data-testid="saldo-total">Saldo total: R$ {transfers.saldoTotal}</span>
             <span className="total_period">Saldo do período: R$ {transfers.transferencias.reduce((acc, transfer) => acc + transfer.valor, 0)}</span>
           </div>
         <table className="transfer_table">
