@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import Pagination from "../components/Pagination";
 import { myFetch } from "../services/fetch";
 import "../styles/BankStatement.css";
-import { converteData } from "../services/data";
+import { converteData } from "../services/dateUtil";
 
 const PageSize = 10;
 
@@ -79,8 +79,8 @@ function BankStatement() {
             const response = await myFetch(
               `transferencias/${account}${filter}`
               );
-            if (response.ok) {
-              setTransfers(await response.json());
+            if (!response.message) {
+              setTransfers(response);
             } else {
               alert("Dados não localizados");
             }
