@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import Pagination from "../pagination/Pagination";
+import Pagination from "../components/Pagination";
 import { myFetch } from "../services/fetch";
 import "../styles/BankStatement.css";
 import { converteData } from "../services/data";
@@ -23,7 +23,7 @@ function BankStatement() {
   return (
     <>
       <div>
-        <h1 className="page_title" data-testid="page-title">
+        <h1 className="page_title">
           Bank Statement
         </h1>
       </div>
