@@ -4,6 +4,7 @@ import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 
+
 describe('Testar página BankStatement', () => {
   it('Elementos deveriam renderizar', () => {
     render(<App />);
@@ -61,8 +62,31 @@ describe('Testar chamada de fetch e renderização das transferencias', () => {
     });
     const saldoTotal = screen.getByTestId('saldo-total');
     expect(saldoTotal).toBeDefined();
-    const filas = screen.queryAllByRole('row');
-    expect(filas).toHaveLength(4);
+    let filas = screen.queryAllByRole('row');
+    expect(filas).toHaveLength(11);
+  });
+  
+  it('Deveria exibir botões de paginação e mudar de página ao clicar botão', async () => {
+    render(<App />);
+    const accountInput = screen.getByTestId('bank-account');
+    expect(accountInput).toBeDefined();
+    const button = screen.getByRole('button');
+    await act(async () => {
+      await userEvent.clear(accountInput);
+      await userEvent.type(accountInput, '1');
+      await userEvent.click(button);
+    });
+    const saldoTotal = screen.getByTestId('saldo-total');
+    expect(saldoTotal).toBeDefined();
+    let filas = screen.queryAllByRole('row');
+   
+    let buttons = screen.queryAllByTestId(/page-number-/i);
+    expect(buttons).toHaveLength(2);
+    await act(async () => {
+      await userEvent.click(buttons[1]);
+    })
+    filas = screen.queryAllByRole('row');
+    expect(filas).toHaveLength(3);  
   });
 
   it('Deveria chamar fetch e rendererizar transferencias de uma conta/operador ao clicar no botão /Consultar/', async () => {

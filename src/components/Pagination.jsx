@@ -54,6 +54,7 @@ const Pagination = props => {
         return (
           <li
             key={pageNumber}
+            data-testid={`page-number-${pageNumber}`}
             className={classnames('pagination-item', {
               selected: pageNumber === currentPage
             })}

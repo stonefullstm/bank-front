@@ -1,7 +1,7 @@
 // source: https://relatablecode.com/testing-a-react-application-integrating-msw-with-vitest
 
 import { rest } from 'msw';
-import { testData, operatorData, periodData } from './testData';
+import { paginationData, operatorData, periodData } from './testData';
 
 const getHandler = rest.get('http://localhost:8080/transferencias/:id', (req, res, ctx) => {
   // eslint-disable-next-line no-unused-vars
@@ -10,7 +10,7 @@ const getHandler = rest.get('http://localhost:8080/transferencias/:id', (req, re
   const operador = req.url.searchParams.get('operador');
   const datainicial = req.url.searchParams.get('datainicial');
   const datafinal = req.url.searchParams.get('datafinal');
-  let data = testData;
+  let data = paginationData;
   if (operador && !datainicial && !datafinal || operador && datainicial && datafinal) {
     data = operatorData
   } else if (!operador && datainicial && datafinal) {
