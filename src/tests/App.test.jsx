@@ -1,7 +1,6 @@
-// const global = global || window;
 import { describe, expect, it } from "vitest"
 // import { render, screen, userEvent, act, waitFor } from "../../test-utils";
-import { render, screen, act, waitFor } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 
@@ -41,17 +40,16 @@ describe('Testar página BankStatement', () => {
       await userEvent.clear(operadorInput);
       await userEvent.type(operadorInput, 'Sicrano');
     });
-    expect(accountInput)
-    // expect(accountInput).toHaveValue(1);
-    // expect(initialInput).toHaveValue('2023-05-07');
-    // expect(finalInput).toHaveValue('2023-07-18');
-    // expect(operadorInput).toHaveValue('Sicrano');
+    expect(accountInput.value).toBe('1')
+    expect(initialInput.value).toBe('2023-05-07');
+    expect(finalInput.value).toBe('2023-07-18');
+    expect(operadorInput.value).toBe('Sicrano');
   })
 });
 
 describe('Testar chamada de fetch e renderização das transferencias', () => {
 
-  it('Deveria chamar fetch ao clicar no botão /Consultar/', async () => {
+  it('Deveria chamar fetch e renderizar transferencias de uma conta ao clicar no botão /Consultar/', async () => {
     render(<App />);
     const accountInput = screen.getByTestId('bank-account');
     expect(accountInput).toBeDefined();
@@ -61,11 +59,54 @@ describe('Testar chamada de fetch e renderização das transferencias', () => {
       await userEvent.type(accountInput, '1');
       await userEvent.click(button);
     });
-    waitFor(() => {
-      const saldoTotal = screen.getByTestId('saldo-total');
-      expect(saldoTotal).toBeDefined();
-      const filas = screen.queryByRole('row');
-      expect(filas).toHaveLength(3);
-    });
+    const saldoTotal = screen.getByTestId('saldo-total');
+    expect(saldoTotal).toBeDefined();
+    const filas = screen.queryAllByRole('row');
+    expect(filas).toHaveLength(4);
   });
+
+  it('Deveria chamar fetch e rendererizar transferencias de uma conta/operador ao clicar no botão /Consultar/', async () => {
+    render(<App />);
+    const accountInput = screen.getByTestId('bank-account');
+    expect(accountInput).toBeDefined();
+    const button = screen.getByRole('button');
+    const operadorInput = screen.getByTestId('operador');
+    expect(operadorInput).toBeDefined();
+    await act(async () => {
+      await userEvent.clear(accountInput);
+      await userEvent.type(accountInput, '1');
+      await userEvent.clear(operadorInput);
+      await userEvent.type(operadorInput, 'Beltrano');
+      await userEvent.click(button);
+    });
+    const saldoTotal = screen.getByTestId('saldo-total');
+    expect(saldoTotal).toBeDefined();
+    const filas = screen.queryAllByRole('row');
+    expect(filas).toHaveLength(2);
+  });
+
+  it('Deveria chamar fetch e rendererizar transferencias de uma conta/intervalo de datas ao clicar no botão /Consultar/', async () => {
+    render(<App />);
+    const accountInput = screen.getByTestId('bank-account');
+    expect(accountInput).toBeDefined();
+    const button = screen.getByRole('button');
+    const initialInput = screen.getByTestId('initial-date');
+    expect(initialInput).toBeDefined();
+    const finalInput = screen.getByTestId('final-date');
+    expect(finalInput).toBeDefined();
+    await act(async () => {
+      await userEvent.clear(accountInput);
+      await userEvent.type(accountInput, '1');
+      await userEvent.clear(initialInput);
+      await userEvent.type(initialInput, '2019-01-01');
+      await userEvent.clear(finalInput);
+      await userEvent.type(finalInput, '2019-05-06')
+      await userEvent.click(button);
+    });
+    const saldoTotal = screen.getByTestId('saldo-total');
+    expect(saldoTotal).toBeDefined();
+    const filas = screen.queryAllByRole('row');
+    expect(filas).toHaveLength(3);
+  });
+
 });
